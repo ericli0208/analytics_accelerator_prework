@@ -16,7 +16,7 @@
 | OR | WHERE **Col1 > 5 OR Col2 < 3** | Filter rows where at least one condition must be true |
 | BETWEEN | WHERE **Col BETWEEN 3 AND 5** | Often easier syntax than using an **AND** |
 
-Other Tips
+### Other Tips
 Though SQL is not case sensitive (it doesn't care if you write your statements as all uppercase or lowercase), we discussed some best practices. The order of the key words does matter! Using what you know so far, you will want to write your statements as:
 
 ```
