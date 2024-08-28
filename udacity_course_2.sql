@@ -9,3 +9,8 @@ SELECT orders.*
 FROM orders
 JOIN accounts
 ON orders.account_id = accounts.id;
+
+/* Aliases are assigned to tables AND columns for convenience and legibility */ 
+
+/* Practice Questions:
+1. 
