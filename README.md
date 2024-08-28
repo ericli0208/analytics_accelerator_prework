@@ -1,5 +1,5 @@
 # Udacity Review Materials
-## Course 1 Recap
+## Course 1 - Basic SQL Recap
 ### SQL Commands
 
 | Statement  | How to Use It | Other Details |
