@@ -50,3 +50,10 @@ There are a few more advanced JOINs that we did not cover here, and they are use
 
 ### Alias
 You learned that you can alias tables and columns using AS or not using it. This allows you to be more efficient in the number of characters you need to write, while at the same time you can assure that your column headings are informative of the data in your table.
+
+## Course 3 - SQL Aggregations
+
+### Aggregation Tips
+
+An important thing to remember: aggregators only aggregate vertically - the values of a column. If you want to perform a calculation across rows, you would do this with [simple arithmetic](https://mode.com/sql-tutorial/sql-operators#arithmetic-in-sql).
+
