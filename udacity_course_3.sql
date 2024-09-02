@@ -107,3 +107,35 @@ If we obtain new orders, we would have to change the limit.
 SQL didn't even calculate the median for us. 
 The above used a SUBQUERY, but you could use any method to find the two necessary values, and then you just need the average of them. */ 
 
+
+-- GROUP BY
+/* GROUP BY can be used to aggregate data within subsets of the data. 
+For example, grouping for different accounts, different regions, or different sales representatives.
+Any column in the SELECT statement that is not within an aggregator must be in the GROUP BY clause.
+The GROUP BY always goes between WHERE and ORDER BY.
+ORDER BY works like SORT in spreadsheet software. */
+
+/* Before we dive deeper into aggregations using GROUP BY statements, it is worth noting that SQL evaluates the aggregations before the LIMIT clause. 
+If you don’t group by any columns, you’ll get a 1-row result—no problem there. 
+If you group by a column with enough unique values that it exceeds the LIMIT number, the aggregates will be calculated, and then some rows will simply be omitted from the results.
+
+This is actually a nice way to do things because you know you’re going to get the correct aggregates. 
+If SQL cuts the table down to 100 rows, then performed the aggregations, your results would be substantially different. 
+The above query’s results exceed 100 rows, so it’s a perfect example. 
+In the next concept, use the SQL environment to try removing the LIMIT and running it again to see what changes. */ 
+
+/* Questions for Group By 
+1. Which account (by name) placed the earliest order? 
+Your solution should have the account name and the date of the order.
+2. Find the total sales in usd for each account. 
+You should include two columns - the total sales for each company's orders in usd and the company name.
+3. Via what channel did the most recent (latest) web_event occur, which account was associated with this web_event? 
+Your query should return only three values - the date, channel, and account name.
+4. Find the total number of times each type of channel from the web_events was used. 
+Your final table should have two columns - the channel and the number of times the channel was used.
+5. Who was the primary contact associated with the earliest web_event?
+6. What was the smallest order placed by each account in terms of total usd. 
+Provide only two columns - the account name and the total usd. 
+Order from smallest dollar amounts to largest.
+7. Find the number of sales reps in each region. 
+Your final table should have two columns - the region and the number of sales_reps. Order from fewest reps to most reps.
