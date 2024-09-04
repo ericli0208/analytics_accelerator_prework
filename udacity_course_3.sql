@@ -124,7 +124,7 @@ If SQL cuts the table down to 100 rows, then performed the aggregations, your re
 The above query’s results exceed 100 rows, so it’s a perfect example. 
 In the next concept, use the SQL environment to try removing the LIMIT and running it again to see what changes. */ 
 
-/* Questions for Group By 
+/* Questions for Group By Part I
 1. Which account (by name) placed the earliest order? 
 Your solution should have the account name and the date of the order.
 2. Find the total sales in usd for each account. 
@@ -138,4 +138,115 @@ Your final table should have two columns - the channel and the number of times t
 Provide only two columns - the account name and the total usd. 
 Order from smallest dollar amounts to largest.
 7. Find the number of sales reps in each region. 
-Your final table should have two columns - the region and the number of sales_reps. Order from fewest reps to most reps.
+Your final table should have two columns - the region and the number of sales_reps. Order from fewest reps to most reps. */
+
+SELECT a.name, o.occurred_at
+FROM accounts a
+  JOIN orders o
+  ON a.id = o.account_id
+ORDER BY occurred_at
+LIMIT 1;
+
+SELECT a.name, SUM(total_amt_usd) total_sales
+FROM orders o
+  JOIN accounts a
+  ON a.id = o.account_id
+GROUP BY a.name;
+
+SELECT w.occurred_at, w.channel, a.name
+FROM web_events w
+  JOIN accounts a
+  ON w.account_id = a.id 
+ORDER BY w.occurred_at DESC
+LIMIT 1;
+
+SELECT channel, COUNT(channel) as channel_count
+FROM web_events
+GROUP BY channel
+ORDER BY channel_count DESC;
+
+SELECT a.primary_poc, w.occurred_at
+FROM web_events w
+  JOIN accounts a
+  ON a.id = w.account_id
+ORDER BY w.occurred_at
+LIMIT 1;
+
+SELECT a.name, MIN(total_amt_usd) as smallest_order
+FROM accounts a
+  JOIN orders o 
+  ON a.id = o.account_id
+GROUP BY a.name
+ORDER BY smallest_order;
+
+SELECT r.name, COUNT(s.id) as num_reps
+FROM region r
+  JOIN sales_reps s
+  ON r.id = s.region_id
+GROUP BY r.name
+ORDER BY num_reps;
+
+/* - You can GROUP BY multiple columns at once. This is often useful to aggregate across a number of different segments.
+- The order of columns listed in the ORDER BY clause does make a difference. You are ordering the columns from left to right. 
+- The order of column names in your GROUP BY clause doesn’t matter—the results will be the same regardless. 
+  If we run the same query and reverse the order in the GROUP BY clause, you can see we get the same results.
+- As with ORDER BY, you can substitute numbers for column names in the GROUP BY clause. 
+  It’s generally recommended to do this only when you’re grouping many columns, or if something else is causing the text in the GROUP BY clause to be excessively long.
+- A reminder here that any column that is not within an aggregation must show up in your GROUP BY statement.  
+  If you forget, you will likely get an error. However, in the off chance that your query does work, you might not like the results! */
+
+/* Questions for Group By Part II
+1. For each account, determine the average amount of each type of paper they purchased across their orders. 
+   Your result should have four columns - one for the account name and one for the average quantity purchased for each of the paper types for each account.
+2. For each account, determine the average amount spent per order on each paper type. 
+   Your result should have four columns - one for the account name and one for the average amount spent on each paper type.
+3. Determine the number of times a particular channel was used in the web_events table for each sales rep. 
+   Your final table should have three columns - the name of the sales rep, the channel, and the number of occurrences. Order your table with the highest number of occurrences first.
+4. Determine the number of times a particular channel was used in the web_events table for each region. 
+   Your final table should have three columns - the region name, the channel, and the number of occurrences. 
+   Order your table with the highest number of occurrences first. */ 
+
+SELECT 
+  a.name, 
+  AVG(o.standard_qty) as avg_standard,
+  AVG(o.gloss_qty) as avg_gloss,
+  AVG(o.poster_qty) as avg_poster
+FROM accounts a 
+  JOIN orders o
+  ON a.id = o.account_id
+GROUP BY a.name; 
+
+SELECT 
+  a.name, 
+  AVG(o.standard_amt_usd) avg_stand, 
+  AVG(o.gloss_amt_usd) avg_gloss, 
+  AVG(o.poster_amt_usd) avg_post
+FROM accounts a
+  JOIN orders o
+  ON a.id = o.account_id
+GROUP BY a.name;
+
+SELECT 
+  s.name, 
+  w.channel, 
+  COUNT(*) num_events
+FROM accounts a
+  JOIN web_events w
+  ON a.id = w.account_id
+  JOIN sales_reps s
+  ON s.id = a.sales_rep_id
+GROUP BY s.name, w.channel
+ORDER BY num_events DESC;
+
+SELECT r.name, w.channel, COUNT(*) num_events
+FROM accounts a
+  JOIN web_events w
+  ON a.id = w.account_id
+  JOIN sales_reps s
+  ON s.id = a.sales_rep_id
+  JOIN region r
+  ON r.id = s.region_id
+GROUP BY r.name, w.channel
+ORDER BY num_events DESC;
+
+
