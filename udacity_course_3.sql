@@ -519,8 +519,53 @@ SELECT account_id, total_amt_usd,
 FROM orders;
 
 SELECT CASE WHEN total >= 2000 THEN 'At Least 2000'
-	     WHEN total >= 1000 AND total < 2000 THEN 'Between 1000 and 2000'
+       WHEN total >= 1000 AND total < 2000 THEN 'Between 1000 and 2000'
        ELSE 'Less than 1000' END AS order_category,
-COUNT(*) AS order_count
+       COUNT(*) AS order_count
 FROM orders
 GROUP BY 1;
+
+SELECT a.name, SUM(total_amt_usd) total_spent,
+	CASE WHEN SUM(total_amt_usd) > 200000 THEN 'Top Level'
+	WHEN SUM(total_amt_usd) >= 100000 AND SUM(total_amt_usd) <= 200000 THEN 'Middle Level'
+	ELSE 'Low Level' END AS cust_level
+FROM orders o
+	JOIN accounts a
+	ON o.account_id = a.id
+GROUP BY 1
+ORDER BY 2 DESC;
+
+-- For just 2016 and 2017, we need to add a WHERE clause
+SELECT a.name, SUM(total_amt_usd) total_spent,
+	CASE WHEN SUM(total_amt_usd) > 200000 THEN 'Top Level'
+	WHEN SUM(total_amt_usd) >= 100000 AND SUM(total_amt_usd) <= 200000 THEN 'Middle Level'
+	ELSE 'Low Level' END AS cust_level
+FROM orders o
+	JOIN accounts a
+	ON o.account_id = a.id
+WHERE o.occurred_at > '2015-12-31'
+GROUP BY 1
+ORDER BY 2 DESC;
+
+SELECT s.name, COUNT(*) as total_orders, 
+	CASE WHEN COUNT(*) > 200 THEN 'top'
+	ELSE 'not top' END AS top_sales
+FROM orders o 
+	JOIN accounts a
+	ON o.account_id = a.id
+	JOIN sales_reps s
+	ON s.id = a.sales_rep_id
+GROUP BY 1
+ORDER BY 2 DESC;
+
+SELECT s.name, COUNT(*) total_orders, SUM(o.total_amt_usd) total_spent, 
+        CASE WHEN COUNT(*) > 200 OR SUM(o.total_amt_usd) > 750000 THEN 'top'
+        WHEN COUNT(*) > 150 OR SUM(o.total_amt_usd) > 500000 THEN 'middle'
+        ELSE 'low' END AS sales_rep_level
+FROM orders o
+JOIN accounts a
+ON o.account_id = a.id 
+JOIN sales_reps s
+ON s.id = a.sales_rep_id
+GROUP BY s.name
+ORDER BY 3 DESC;
