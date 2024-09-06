@@ -4,7 +4,7 @@
 
 | Statement  | How to Use It | Other Details |
 | ------------- | ------------- | ------------- |
-| Select | SELECT **Col1, Col2, ...** | Provide the columns you want |
+| SELECT | SELECT **Col1, Col2, ...** | Provide the columns you want |
 | FROM | FROM **Table** | Provide the table where the columns exist |
 | LIMIT | LIMIT **10** | Limits based number of rows returned |
 | ORDER BY | ORDER BY **Col** | Orders table based on the column. Used with **DESC**. |
@@ -56,4 +56,39 @@ You learned that you can alias tables and columns using AS or not using it. This
 ### Aggregation Tips
 
 An important thing to remember: aggregators only aggregate vertically - the values of a column. If you want to perform a calculation across rows, you would do this with [simple arithmetic](https://mode.com/sql-tutorial/sql-operators#arithmetic-in-sql).
+
+| Statement  | How to Use It | Other Details |
+| ------------- | ------------- | ------------- |
+| COUNT | SELECT **COUNT**(*) | Provide the column you want to COUNT by |
+| SUM | SELECT **SUM**(column1) | Provide the columnn you want to SUM by |
+| MIN | SELECT **MIN**(column1) | Provide the column you would like to get the minimum value for. Applies for numerical, text, and date values. |
+| MAX | SELECT **MAX**(column1) | Provide the column you would like to get the maximum value for. Applies for numerical, text, and date values. |
+| AVG | SELECT **AVG**(column1) | Provide the column you would like to get the average value for. Applies for numerical values. |
+| GROUP BY | **GROUP BY** (column1), (column2) | Provide the column(s) you would like to group by. Occurs after **FROM** and **JOIN** statements. |
+| HAVING | **HAVING** (value1) (logical expression) (condition1), ... | Occurs after **GROUP BY** statement as a subfilter. |
+| DATE_TRUNC | SELECT **DATE_TRUNC**('interval', column1) | Provide the interval (desired date_time level) and column you would like to truncate the date value for. |
+| DATE_PART | SELECT **DATE_PART**('interval', column1) | Provide the interval (desired date_time leve) and column you would like to grab the date value for. |
+| CASE | SELECT **CASE** **WHEN**, **THEN**, **END AS** column_name | May also use **ELSE** as an optional component to catch cases that didn't meet any other previous CASE conditions; Able to make any conditional statements using any conditional operator (like WHERE) between **WHEN** and **THEN** |
+
+### DATE_TRUNC vs DATE_PART
+- DATE_TRUNC: truncates (*rounds*) a date to the precision specified (microsecond - millenium)
+- DATE_PART: returns a particular part of a datetime value, grouping for that particular value (i.e. days, months, years)
+
+**All intervals & units of time that can be entered:** 
+- microsecond
+- millisecond
+- second
+- minute
+- hour
+- day
+- week
+- month
+- quarter
+- year
+- decade
+- century
+- millenium
+
+## Course 4 - Subqueries and Temporary Tables
+
 
