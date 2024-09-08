@@ -43,6 +43,35 @@ how many web_events did they have for each channel?
 6. What is the lifetime average amount spent in terms of total_amt_usd, 
 including only the companies that spent more per order, on average, than the average of all orders. */ 
 
+-- BREAKDOWN FOR QUESTION 1:
+-- T1 must reflect all applicable fields (rep_name, region_name, total_amt)
+SELECT s.name rep_name, r.name region_name, SUM(o.total_amt_usd) total_amt
+FROM sales_reps s
+  JOIN accounts a
+  ON a.sales_rep_id = s.id
+  JOIN orders o
+  ON o.account_id = a.id
+  JOIN region r
+  ON r.id = s.region_id
+GROUP BY 1, 2
+ORDER BY 3 DESC; 
+-- this returns total sales amounts by all sales reps and their regions
+
+-- T2 must grab the MAX sales from each region, but including sales reps names would return unique value between rep AND region, not giving us the max for each region specifically
+SELECT region_name, MAX(total_amt) max_sales
+FROM (SELECT s.name rep_name, r.name region_name, SUM(o.total_amt_usd) total_amt
+       FROM sales_reps s
+          JOIN accounts a
+          ON a.sales_rep_id = s.id
+          JOIN orders o
+          ON o.account_id = a.id
+          JOIN region r
+          ON r.id = s.region_id
+        GROUP BY 1, 2
+        ORDER BY 3 DESC) t1
+GROUP BY 1; 
+
+-- T3 is the original T1 table values, but will return a match for rep_name, region_name, and total_amt where region name and total amount are equal between t2 (max amounts) and t3
 SELECT t3.rep_name, t3.region_name, t3.total_amt
 FROM(SELECT region_name, MAX(total_amt) total_amt
         FROM(SELECT s.name rep_name, r.name region_name, SUM(o.total_amt_usd) total_amt
@@ -65,5 +94,6 @@ JOIN (SELECT s.name rep_name, r.name region_name, SUM(o.total_amt_usd) total_amt
         ON r.id = s.region_id
         GROUP BY 1,2
         ORDER BY 3 DESC) t3
-ON t3.region_name = t2.region_name AND t3.total_amt = t2.total_amt;
+ON t3.region_name = t2.region_name AND t3.total_amt = t2.total_amt; -- conditional equal statement
+
 
