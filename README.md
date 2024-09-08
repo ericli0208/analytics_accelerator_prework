@@ -88,7 +88,3 @@ An important thing to remember: aggregators only aggregate vertically - the valu
 - decade
 - century
 - millenium
-
-## Course 4 - Subqueries and Temporary Tables
-
-
