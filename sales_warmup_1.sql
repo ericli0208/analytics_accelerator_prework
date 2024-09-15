@@ -1,6 +1,6 @@
 -- PREWORK 1 ANALYTICS ACCELERATOR
 
--- Relevant data table: https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1stop-sentinel-427221-q7!2sprework!3ssales
+-- BigQuery Data Table: https://console.cloud.google.com/bigquery?ws=!1m5!1m4!4m3!1stop-sentinel-427221-q7!2sprework!3ssales
 
 /* QUESTIONS:
 1. What is the earliest year of purchase?
