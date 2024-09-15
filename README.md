@@ -88,3 +88,34 @@ An important thing to remember: aggregators only aggregate vertically - the valu
 - decade
 - century
 - millenium
+
+## Course 4 - SQL Subqueries and Table Expressions
+### Subqueries and Common Table Expressions
+Subqueries and Table Expressions are methods for being able to write a query that creates a table, and then write a query that interacts with this newly created table. 
+Sometimes the question you are trying to answer doesn't have an answer when working directly with existing tables in database.
+However, if we were able to create new tables from the existing tables, we know we could query these new tables to answer our question.
+
+Example of well-formatted Subqueries:
+```
+SELECT *
+FROM (SELECT DATE_TRUNC('day',occurred_at) AS day,
+        channel,
+        COUNT(*) as events
+      FROM web_events 
+      GROUP BY 1,2
+      ORDER BY 3 DESC) sub;
+```
+
+Example of well-formatted CTE: 
+
+```
+WITH t1 AS (SELECT DATE_TRUNC('day',occurred_at) AS day,
+             channel,
+             COUNT(*) as events
+      FROM web_events 
+      GROUP BY 1,2)
+SELECT *
+FROM t1
+ORDER BY COUNT(*) DESC;
+
+```
