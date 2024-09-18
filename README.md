@@ -1,4 +1,5 @@
-# Udacity Review Materials
+# Udacity SQL Course Review Materials
+The files and concepts in this repository are from the [Udacity SQL for Data Analytics](https://www.udacity.com/enrollment/ud198) course
 ## Course 1 - Basic SQL Recap
 ### SQL Commands
 
